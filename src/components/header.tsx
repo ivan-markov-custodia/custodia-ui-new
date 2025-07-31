@@ -139,23 +139,3 @@ const Header: React.FC<HeaderProps> = ({ user, onLogout }) => {
 };
 
 export default Header;
-          <Image
-            src="/user.svg"
-            alt="User Icon"
-            width={24}
-            height={24}
-            className="rounded-full bg-gray-200 p-1 dark:bg-gray-700"
-          />
-          <span className="font-medium text-black dark:text-white">
-            {user.name}
-          </span>
-        </div>
-        <Button onClick={handleLogout} variant="logout">
-          Logout
-        </Button>
-      </div>
-    </header>
-  );
-};
-
-export default Header;
