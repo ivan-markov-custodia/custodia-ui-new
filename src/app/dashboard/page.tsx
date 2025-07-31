@@ -22,23 +22,30 @@ const DashboardPage: React.FC = () => {
     <div className="min-h-screen bg-gray-100 dark:bg-gray-900">
       <Header user={user} onLogout={logout} />
       <main className="p-8">
-        <div className="rounded-lg bg-white p-4 shadow-md dark:bg-gray-800">
-          <div className="space-y-2">
-            {Object.entries(user).map(([key, value]) =>
-              typeof value !== "object" ? (
-                <div
-                  key={key}
-                  className="flex justify-between border-b border-gray-200 py-2 dark:border-gray-700"
-                >
-                  <span className="font-medium text-gray-600 capitalize dark:text-gray-400">
-                    {key.replace(/([A-Z])/g, " $1")}
-                  </span>
-                  <span className="text-right text-gray-800 dark:text-gray-200">
-                    {String(value)}
-                  </span>
-                </div>
-              ) : null,
-            )}
+        <div className="mx-auto max-w-4xl">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-8 text-center">
+            <div className="mb-6">
+              <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
+                Welcome back, {user.firstname} {user.lastname}!
+              </h1>
+              <p className="text-xl text-gray-600 dark:text-gray-400">
+                We're glad to see you again. Your dashboard is ready.
+              </p>
+            </div>
+            <div className="flex justify-center space-x-4">
+              <button
+                onClick={() => router.push("/profile")}
+                className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors"
+              >
+                View Profile
+              </button>
+              <button
+                onClick={() => router.push("/scopes")}
+                className="bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-lg font-medium transition-colors"
+              >
+                View Permissions
+              </button>
+            </div>
           </div>
         </div>
       </main>
