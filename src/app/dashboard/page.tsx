@@ -22,14 +22,23 @@ const DashboardPage: React.FC = () => {
     <div className="min-h-screen bg-gray-100 dark:bg-gray-900">
       <Header user={user} onLogout={logout} />
       <main className="p-8">
-        <div className="mx-auto max-w-4xl">
-          <div className="rounded-lg bg-white p-8 shadow-md dark:bg-gray-800 text-center">
-            <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
-              Welcome, {user.firstname} {user.lastname}!
-            </h1>
-            <p className="text-lg text-gray-600 dark:text-gray-400">
-              You're successfully logged into your Custodia dashboard.
-            </p>
+        <div className="rounded-lg bg-white p-4 shadow-md dark:bg-gray-800">
+          <div className="space-y-2">
+            {Object.entries(user).map(([key, value]) =>
+              typeof value !== "object" ? (
+                <div
+                  key={key}
+                  className="flex justify-between border-b border-gray-200 py-2 dark:border-gray-700"
+                >
+                  <span className="font-medium text-gray-600 capitalize dark:text-gray-400">
+                    {key.replace(/([A-Z])/g, " $1")}
+                  </span>
+                  <span className="text-right text-gray-800 dark:text-gray-200">
+                    {String(value)}
+                  </span>
+                </div>
+              ) : null,
+            )}
           </div>
         </div>
       </main>
