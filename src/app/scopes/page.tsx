@@ -4,7 +4,7 @@ import Header from "../../components/header";
 import { useAuth } from "../../components/auth-provider";
 import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
-import { Search } from "lucide-react";
+import { Search, ChevronDown, ChevronRight } from "lucide-react";
 
 const ScopesPage: React.FC = () => {
   const { user, logout, jwtToken } = useAuth();
@@ -12,6 +12,7 @@ const ScopesPage: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [scopes, setScopes] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
+  const [collapsedGroups, setCollapsedGroups] = useState<{ [key: string]: boolean }>({});
 
   React.useEffect(() => {
     if (!user) {
@@ -476,6 +477,14 @@ const ScopesPage: React.FC = () => {
         ];
         setScopes(mockScopes);
         setLoading(false);
+        
+        // Initialize all groups as collapsed
+        const categories = categorizeScopes(mockScopes);
+        const initialCollapsedState: { [key: string]: boolean } = {};
+        Object.keys(categories).forEach(category => {
+          initialCollapsedState[category] = true;
+        });
+        setCollapsedGroups(initialCollapsedState);
       } catch (error) {
         console.error("Error fetching scopes:", error);
         setLoading(false);
@@ -511,6 +520,13 @@ const ScopesPage: React.FC = () => {
   };
 
   const categorizedScopes = categorizeScopes(filteredScopes);
+
+  const toggleGroup = (category: string) => {
+    setCollapsedGroups(prev => ({
+      ...prev,
+      [category]: !prev[category]
+    }));
+  };
 
   if (!user) {
     return null;
@@ -550,19 +566,31 @@ const ScopesPage: React.FC = () => {
             <div className="space-y-6">
               {Object.entries(categorizedScopes).map(([category, categoryScopes]) => (
                 <div key={category} className="rounded-lg bg-white p-6 shadow-md dark:bg-gray-800">
-                  <h2 className="mb-4 text-xl font-semibold text-gray-900 dark:text-white">
-                    {category} ({categoryScopes.length})
-                  </h2>
-                  <div className="grid gap-2 md:grid-cols-2 lg:grid-cols-3">
-                    {categoryScopes.map((scope) => (
-                      <div
-                        key={scope}
-                        className="rounded-md bg-gray-50 px-3 py-2 text-sm font-mono text-gray-700 dark:bg-gray-700 dark:text-gray-300"
-                      >
-                        {scope}
-                      </div>
-                    ))}
-                  </div>
+                  <button
+                    onClick={() => toggleGroup(category)}
+                    className="flex w-full items-center justify-between text-left"
+                  >
+                    <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+                      {category} ({categoryScopes.length})
+                    </h2>
+                    {collapsedGroups[category] ? (
+                      <ChevronRight className="h-5 w-5 text-gray-500" />
+                    ) : (
+                      <ChevronDown className="h-5 w-5 text-gray-500" />
+                    )}
+                  </button>
+                  {!collapsedGroups[category] && (
+                    <div className="mt-4 grid gap-2 md:grid-cols-2 lg:grid-cols-3">
+                      {categoryScopes.map((scope) => (
+                        <div
+                          key={scope}
+                          className="rounded-md bg-gray-50 px-3 py-2 text-sm font-mono text-gray-700 dark:bg-gray-700 dark:text-gray-300"
+                        >
+                          {scope}
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
