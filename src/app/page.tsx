@@ -35,7 +35,7 @@ export default function Home() {
 
       if (res.ok) {
         const data = await res.json();
-        login(data.user, data.jwtToken);
+        login(data.user, data.jwtToken, data.scopes);
       } else {
         setError("Login failed. Please check your credentials.");
       }

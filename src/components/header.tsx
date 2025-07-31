@@ -46,8 +46,7 @@ const Header: React.FC<HeaderProps> = ({ user, onLogout }) => {
 
   const handleScopesClick = () => {
     setIsDropdownOpen(false);
-    // TODO: Navigate to scopes page
-    console.log("Navigate to scopes");
+    router.push("/scopes");
   };
 
   return (
