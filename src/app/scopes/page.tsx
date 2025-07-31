@@ -126,7 +126,7 @@ const ScopesPage: React.FC = () => {
                 <div key={category} className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
                   <button
                     onClick={() => toggleCategory(category)}
-                    className="w-full bg-gray-50 dark:bg-gray-700 px-6 py-4 border-b border-gray-200 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
+                    className="w-full bg-gray-50 dark:bg-gray-700 px-6 py-4 border-b border-gray-200 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors cursor-pointer"
                   >
                     <h2 className="text-xl font-semibold text-gray-900 dark:text-white flex items-center gap-2">
                       {expandedCategories.has(category) ? (

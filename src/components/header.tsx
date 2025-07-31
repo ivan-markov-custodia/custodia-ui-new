@@ -48,14 +48,23 @@ const Header: React.FC<HeaderProps> = ({ user, onLogout }) => {
     router.push("/scopes");
   };
 
+  const handleLogoClick = () => {
+    router.push("/dashboard");
+  };
+
   return (
     <header className="flex items-center justify-between bg-white p-4 shadow-md dark:bg-black">
-      <Image
-        src="/custodia-logo.svg"
-        alt="Custodia Logo"
-        width={150}
-        height={50}
-      />
+      <button
+        onClick={handleLogoClick}
+        className="cursor-pointer hover:opacity-80 transition-opacity"
+      >
+        <Image
+          src="/custodia-logo.svg"
+          alt="Custodia Logo"
+          width={150}
+          height={50}
+        />
+      </button>
       <div className="flex items-center space-x-4">
         <div className="relative" ref={dropdownRef}>
           <button
