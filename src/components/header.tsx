@@ -40,8 +40,7 @@ const Header: React.FC<HeaderProps> = ({ user, onLogout }) => {
 
   const handleProfileClick = () => {
     setIsDropdownOpen(false);
-    // TODO: Navigate to profile page
-    console.log("Navigate to profile");
+    router.push("/profile");
   };
 
   const handleScopesClick = () => {
