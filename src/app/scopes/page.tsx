@@ -3,13 +3,14 @@ import React from "react";
 import Header from "../../components/header";
 import { useAuth } from "../../components/auth-provider";
 import { useRouter } from "next/navigation";
-import { Shield, Search } from "lucide-react";
+import { Shield, Search, ChevronDown, ChevronRight } from "lucide-react";
 import { Input } from "@/components/ui/input";
 
 const ScopesPage: React.FC = () => {
   const { user, logout, scopes } = useAuth();
   const router = useRouter();
   const [searchTerm, setSearchTerm] = React.useState("");
+  const [expandedCategories, setExpandedCategories] = React.useState<Set<string>>(new Set());
 
   React.useEffect(() => {
     if (!user) {
@@ -54,6 +55,16 @@ const ScopesPage: React.FC = () => {
 
   const categorizedScopes = categorizeScopes(filteredScopes);
   const sortedCategories = Object.keys(categorizedScopes).sort();
+
+  const toggleCategory = (category: string) => {
+    const newExpanded = new Set(expandedCategories);
+    if (newExpanded.has(category)) {
+      newExpanded.delete(category);
+    } else {
+      newExpanded.add(category);
+    }
+    setExpandedCategories(newExpanded);
+  };
 
   const formatScopeName = (scope: string) => {
     if (scope === "DEFAULT") return "Default Access";
@@ -113,39 +124,49 @@ const ScopesPage: React.FC = () => {
             <div className="space-y-8">
               {sortedCategories.map(category => (
                 <div key={category} className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
-                  <div className="bg-gray-50 dark:bg-gray-700 px-6 py-4 border-b border-gray-200 dark:border-gray-600">
+                  <button
+                    onClick={() => toggleCategory(category)}
+                    className="w-full bg-gray-50 dark:bg-gray-700 px-6 py-4 border-b border-gray-200 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
+                  >
                     <h2 className="text-xl font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+                      {expandedCategories.has(category) ? (
+                        <ChevronDown className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                      ) : (
+                        <ChevronRight className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                      )}
                       <Shield className="h-5 w-5 text-blue-600 dark:text-blue-400" />
                       {category}
                       <span className="text-sm font-normal text-gray-500 dark:text-gray-400">
                         ({categorizedScopes[category].length} scopes)
                       </span>
                     </h2>
-                  </div>
-                  <div className="divide-y divide-gray-200 dark:divide-gray-700">
-                    {categorizedScopes[category].map((scope, index) => (
-                      <div key={scope} className="px-6 py-4 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
-                        <div className="flex items-start justify-between">
-                          <div className="flex-1">
-                            <h3 className="font-medium text-gray-900 dark:text-white mb-1">
-                              {formatScopeName(scope)}
-                            </h3>
-                            <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
-                              {getScopeDescription(scope)}
-                            </p>
-                            <code className="text-xs bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded font-mono text-gray-700 dark:text-gray-300">
-                              {scope}
-                            </code>
-                          </div>
-                          <div className="ml-4 flex-shrink-0">
-                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400">
-                              Active
-                            </span>
+                  </button>
+                  {expandedCategories.has(category) && (
+                    <div className="divide-y divide-gray-200 dark:divide-gray-700">
+                      {categorizedScopes[category].map((scope, index) => (
+                        <div key={scope} className="px-6 py-4 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+                          <div className="flex items-start justify-between">
+                            <div className="flex-1">
+                              <h3 className="font-medium text-gray-900 dark:text-white mb-1">
+                                {formatScopeName(scope)}
+                              </h3>
+                              <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+                                {getScopeDescription(scope)}
+                              </p>
+                              <code className="text-xs bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded font-mono text-gray-700 dark:text-gray-300">
+                                {scope}
+                              </code>
+                            </div>
+                            <div className="ml-4 flex-shrink-0">
+                              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400">
+                                Active
+                              </span>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    ))}
-                  </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
