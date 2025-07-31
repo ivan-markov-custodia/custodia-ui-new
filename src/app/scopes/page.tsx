@@ -568,15 +568,15 @@ const ScopesPage: React.FC = () => {
                 <div key={category} className="rounded-lg bg-white p-6 shadow-md dark:bg-gray-800">
                   <button
                     onClick={() => toggleGroup(category)}
-                    className="flex w-full items-center justify-between text-left"
+                    className="flex w-full items-center justify-between text-left cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 rounded-md p-2 transition-colors"
                   >
                     <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
                       {category} ({categoryScopes.length})
                     </h2>
                     {collapsedGroups[category] ? (
-                      <ChevronRight className="h-5 w-5 text-gray-500" />
+                      <ChevronRight className="h-5 w-5 text-gray-500 cursor-pointer" />
                     ) : (
-                      <ChevronDown className="h-5 w-5 text-gray-500" />
+                      <ChevronDown className="h-5 w-5 text-gray-500 cursor-pointer" />
                     )}
                   </button>
                   {!collapsedGroups[category] && (
